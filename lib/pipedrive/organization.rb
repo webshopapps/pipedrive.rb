@@ -16,5 +16,15 @@ module Pipedrive
 
       follow_pagination(:make_api_call, [:get, 'find'], params, &block)
     end
+  
+
+    def search(*args, &block)
+      params = args.extract_options!
+      params[:term] ||= args[0]
+      raise 'term is missing' unless params[:term]
+      return to_enum(:search, params) unless block_given?
+
+      follow_pagination(:make_api_call, [:get, 'search'], params, &block)
+    end
   end
 end
